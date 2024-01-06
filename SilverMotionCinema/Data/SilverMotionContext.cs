@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using SilverMotionCinema.Models;
 
-namespace SilverMotionCinema.Models;
+namespace SilverMotionCinema.Data;
 
 public partial class SilverMotionContext : DbContext
 {
@@ -139,16 +140,19 @@ public partial class SilverMotionContext : DbContext
             entity.ToTable("Movie");
 
             entity.Property(e => e.MovieId).HasColumnName("MovieID");
+            entity.Property(e => e.AgeRating)
+                .HasMaxLength(16)
+                .IsUnicode(false);
             entity.Property(e => e.Country)
                 .HasMaxLength(64)
                 .IsUnicode(false);
             entity.Property(e => e.Description)
                 .HasMaxLength(512)
                 .IsUnicode(false);
-            entity.Property(e => e.Duration).HasColumnType("datetime");
             entity.Property(e => e.Genre)
                 .HasMaxLength(20)
                 .IsUnicode(false);
+            entity.Property(e => e.Image).HasColumnType("image");
             entity.Property(e => e.Language)
                 .HasMaxLength(16)
                 .IsUnicode(false);

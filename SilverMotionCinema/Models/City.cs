@@ -9,7 +9,7 @@ public partial class City
 
     public string Name { get; set; } = null!;
 
-    public string? State { get; set; }
+    public string State { get; set; } = null!;
 
     public string? ZipCode { get; set; }
 
