@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SilverMotionCinema.Models;
+namespace SilverMotionCinema;
 
 public partial class ShowSeat
 {

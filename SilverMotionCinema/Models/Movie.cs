@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SilverMotionCinema.Models;
+namespace SilverMotionCinema;
 
 public partial class Movie
 {
@@ -24,6 +24,8 @@ public partial class Movie
     public string AgeRating { get; set; } = null!;
 
     public string? Image { get; set; }
+
+    public bool? Selected { get; set; }
 
     public virtual ICollection<Show> Shows { get; set; } = new List<Show>();
 }

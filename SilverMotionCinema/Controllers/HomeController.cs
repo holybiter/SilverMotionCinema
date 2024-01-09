@@ -19,7 +19,7 @@ namespace SilverMotionCinema.Controllers
 
         public IActionResult Index()
         {
-            var movies = _context.Movies.ToList();
+            var movies = _context.Movies.Where(m => m.Selected == true).ToList();
             return View(movies);
         }
 
