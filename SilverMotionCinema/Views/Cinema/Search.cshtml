@@ -1,0 +1,21 @@
+﻿@{
+    string cityName = ViewBag.CityName;
+    string cityState = ViewBag.CityState;
+    List<Cinema> cinemas = ViewBag.Cinemas;
+}
+
+<a class="btn btn-primary" asp-controller="Cinema" asp-action="Index">	&#60 Go back to Search</a>
+@foreach(Cinema cinema in cinemas)
+{
+    <div class="card border-primary mb-3 mt-4" style="max-width: 50rem;">
+        <div class="card-header border-primary text-primary">Silver Motion Cinema</div>
+        <div class="card-body text-primary">
+            <h5 class="card-title">@cityName | @cityState</h5>
+            <p> @cinema.Name</p>
+            <p>Halls: @cinema.TotalCinemaHalls</p>
+        </div>
+        <div class="card-footer bg-transparent border-primary p-0">
+            <a class="btn btn-primary w-100 h-100" asp-controller="Cinema" asp-action="Details" asp-route-id="@cinema.CinemaId">Choose this cinema</a>
+        </div>
+    </div>
+}

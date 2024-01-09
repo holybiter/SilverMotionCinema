@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SilverMotionCinema.Data;
 using SilverMotionCinema.Models;
 using System.Diagnostics;
 
@@ -7,15 +8,19 @@ namespace SilverMotionCinema.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SilverMotionContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, SilverMotionContext context)
         {
             _logger = logger;
+            _context = context;
         }
+
 
         public IActionResult Index()
         {
-            return View();
+            var movies = _context.Movies.ToList();
+            return View(movies);
         }
 
         public IActionResult Privacy()

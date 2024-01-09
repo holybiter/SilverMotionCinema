@@ -152,7 +152,8 @@ public partial class SilverMotionContext : DbContext
             entity.Property(e => e.Genre)
                 .HasMaxLength(20)
                 .IsUnicode(false);
-            entity.Property(e => e.Image).HasColumnType("image");
+            entity.Property(e => e.Image)
+                .HasMaxLength(512);
             entity.Property(e => e.Language)
                 .HasMaxLength(16)
                 .IsUnicode(false);

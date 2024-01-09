@@ -61,7 +61,7 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -6018,6 +6018,7 @@ textarea.form-control-lg {
   .carousel-control-prev,
 .carousel-control-next {
     transition: none;
+    filter: invert(1);
   }
 }
 .carousel-control-prev:hover, .carousel-control-prev:focus,
@@ -11215,6 +11216,10 @@ textarea.form-control-lg {
 
   .d-print-none {
     display: none !important;
+  }
+  .carousel-control-next,
+  .carousel-control-prev /*, .carousel-indicators */ {
+    filter: invert(100%);
   }
 }
 

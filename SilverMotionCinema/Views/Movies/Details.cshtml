@@ -1,0 +1,22 @@
+﻿@model Movie
+@{
+    ViewData["Title"] = "Movie Detail - " + Model.Title;
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>@Model.Title <span class="opacity-25">@((Model.ReleaseDate)?.ToString("yyyy"))</span></h2>
+            <button type="button" class="btn btn-outline-primary mt-2" disabled>@Model.Genre</button>
+            <p class="mt-4">@Model.Description</p>
+            <p>Country: @Model.Country</p>
+            <p>Duration: @(Model.Duration/60)h@(Model.Duration%60)min</p>
+            <p>Language: @Model.Language</p>
+            <p>Age Rating: @Model.AgeRating</p>
+            <a href="#" class="btn btn-primary mt-4">Get tickets</a>
+        </div>
+        <div class="col-md-4">
+            <img src="@Model.Image" class="img-fluid" alt="@Model.Title">
+        </div>
+    </div>
+</div>

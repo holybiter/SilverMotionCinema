@@ -1,0 +1,27 @@
+﻿@model List<Movie>
+
+<h1 class="mt-5">Movies at SilverMotion Cinema</h1>
+<h2 class="mt-5">Featured Movies</h2>
+
+
+<div class="container">
+    <div class="row">
+        @foreach (Movie movie in Model)
+        {
+            <div class="col-md-3">
+                 <div class="card mt-5 mx-2" style="width: 100%;">
+                    <a class="text-decoration-none text-reset" asp-controller="Movies" asp-action="Details" asp-route-id="@movie.MovieId">
+                           <img class="card-img-top" src="@movie.Image" alt="@movie.Title">
+                            <div class="card-body">
+                                 <h5 class="card-title">@movie.Title</h5>
+                                 <p class="card-text">@(movie.Duration/60)h@(movie.Duration % 60)min | @movie.AgeRating<br /> @((movie.ReleaseDate)?.ToString("yyyy"))</p>
+
+                                 <a href="#" class="btn btn-primary">Get tickets</a>
+                            
+                            </div>
+                      </a>
+                  </div>
+            </div>
+        }
+    </div>
+</div>

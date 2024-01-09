@@ -23,7 +23,7 @@ public partial class Movie
 
     public string AgeRating { get; set; } = null!;
 
-    public byte[]? Image { get; set; }
+    public string? Image { get; set; }
 
     public virtual ICollection<Show> Shows { get; set; } = new List<Show>();
 }
