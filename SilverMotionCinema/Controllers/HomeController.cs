@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SilverMotionCinema.Areas.Identity.Data;
 using SilverMotionCinema.Data;
 using SilverMotionCinema.Models;
 using System.Diagnostics;
@@ -10,6 +12,7 @@ namespace SilverMotionCinema.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly SilverMotionContext _context;
+        private readonly UserManager<SilverMotionUser> _userManager;
 
         public HomeController(ILogger<HomeController> logger, SilverMotionContext context)
         {
