@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using SilverMotionCinema.Models;
 
 namespace SilverMotionCinema.Data;
 
@@ -15,6 +16,8 @@ public partial class SilverMotionContext : DbContext
     {
     }
 
+    public virtual DbSet<AgeRating> AgeRatings { get; set; }
+
     public virtual DbSet<Booking> Bookings { get; set; }
 
     public virtual DbSet<Cinema> Cinemas { get; set; }
@@ -24,6 +27,10 @@ public partial class SilverMotionContext : DbContext
     public virtual DbSet<CinemaSeat> CinemaSeats { get; set; }
 
     public virtual DbSet<City> Cities { get; set; }
+
+    public virtual DbSet<Genre> Genres { get; set; }
+
+    public virtual DbSet<Language> Languages { get; set; }
 
     public virtual DbSet<Movie> Movies { get; set; }
 
@@ -36,10 +43,22 @@ public partial class SilverMotionContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=.\\;Database=SilverMotion;Trusted_Connection=True;TrustServerCertificate=true;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AgeRating>(entity =>
+        {
+            entity.HasKey(e => e.AgeRatingId).HasName("PK__Age_Rati__CC7BFE1EAE025F9D");
+
+            entity.ToTable("Age_Rating");
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(8)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<Booking>(entity =>
         {
             entity.HasKey(e => e.BookingId).HasName("PK__Booking__73951ACD3D0354D1");
@@ -131,6 +150,26 @@ public partial class SilverMotionContext : DbContext
                 .IsUnicode(false);
         });
 
+        modelBuilder.Entity<Genre>(entity =>
+        {
+            entity.HasKey(e => e.GenreId).HasName("PK__Genres__0385057EEB552FEE");
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(64)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Language>(entity =>
+        {
+            entity.HasKey(e => e.LanguageId).HasName("PK__Language__B93855ABAF6BAD34");
+
+            entity.ToTable("Language");
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(64)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<Movie>(entity =>
         {
             entity.HasKey(e => e.MovieId).HasName("PK__Movie__4BD2943A6AD5712A");
@@ -138,28 +177,46 @@ public partial class SilverMotionContext : DbContext
             entity.ToTable("Movie");
 
             entity.Property(e => e.MovieId).HasColumnName("MovieID");
-            entity.Property(e => e.AgeRating)
-                .HasMaxLength(16)
-                .IsUnicode(false);
+            entity.Property(e => e.AgeRating).HasDefaultValue(1);
             entity.Property(e => e.Country)
                 .HasMaxLength(64)
                 .IsUnicode(false);
             entity.Property(e => e.Description)
                 .HasMaxLength(512)
                 .IsUnicode(false);
-            entity.Property(e => e.Genre)
-                .HasMaxLength(20)
-                .IsUnicode(false);
             entity.Property(e => e.Image)
                 .HasMaxLength(256)
                 .IsUnicode(false);
-            entity.Property(e => e.Language)
-                .HasMaxLength(16)
-                .IsUnicode(false);
+            entity.Property(e => e.LanguageId).HasDefaultValue(1);
             entity.Property(e => e.ReleaseDate).HasColumnType("datetime");
             entity.Property(e => e.Title)
                 .HasMaxLength(256)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.AgeRatingNavigation).WithMany(p => p.Movies)
+                .HasForeignKey(d => d.AgeRating)
+                .HasConstraintName("FK__Movie__AgeRating__6383C8BA");
+
+            entity.HasOne(d => d.Language).WithMany(p => p.Movies)
+                .HasForeignKey(d => d.LanguageId)
+                .HasConstraintName("FK__Movie__LanguageI__6C190EBB");
+
+            entity.HasMany(d => d.Genres).WithMany(p => p.Movies)
+                .UsingEntity<Dictionary<string, object>>(
+                    "MovieGenre",
+                    r => r.HasOne<Genre>().WithMany()
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_MovieGenre_Genre"),
+                    l => l.HasOne<Movie>().WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_MovieGenre_Movie"),
+                    j =>
+                    {
+                        j.HasKey("MovieId", "GenreId");
+                        j.ToTable("MovieGenre");
+                    });
         });
 
         modelBuilder.Entity<Payment>(entity =>

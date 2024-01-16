@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SilverMotionCinema.Data;
 using SilverMotionCinema.Models;
 using System.Diagnostics;
@@ -19,7 +20,12 @@ namespace SilverMotionCinema.Controllers
 
         public IActionResult Index()
         {
-            var movies = _context.Movies.Where(m => m.Selected == true).ToList();
+            List<Movie> movies = _context.Movies
+            .Where(m => m.Selected == true)
+            .Include(m => m.Genres)
+            .Include(m => m.Language)
+            .Include(m => m.AgeRatingNavigation)
+            .ToList();
             return View(movies);
         }
 

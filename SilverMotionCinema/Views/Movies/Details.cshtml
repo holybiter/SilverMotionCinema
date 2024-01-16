@@ -7,12 +7,17 @@
     <div class="row">
         <div class="col-md-6">
             <h2>@Model.Title <span class="opacity-25">@((Model.ReleaseDate)?.ToString("yyyy"))</span></h2>
-            <button type="button" class="btn btn-outline-primary mt-2" disabled>@Model.Genre</button>
+            @{
+                @foreach (var genre in Model.Genres)
+                {
+                    <button type="button" class="btn btn-outline-primary mt-2" disabled>@genre.Name</button>
+                }
+            }
             <p class="mt-4">@Model.Description</p>
             <p>Country: @Model.Country</p>
             <p>Duration: @(Model.Duration/60)h@(Model.Duration%60)min</p>
-            <p>Language: @Model.Language</p>
-            <p>Age Rating: @Model.AgeRating</p>
+            <p>Language: @Model.Language?.Name</p>
+            <p>Age Rating: @Model.AgeRatingNavigation?.Name</p>
             <a href="#" class="btn btn-primary mt-4">Get tickets</a>
         </div>
         <div class="col-md-4">

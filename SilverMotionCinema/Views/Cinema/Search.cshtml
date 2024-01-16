@@ -15,7 +15,7 @@
             <p>Halls: @cinema.TotalCinemaHalls</p>
         </div>
         <div class="card-footer bg-transparent border-primary p-0">
-            <a class="btn btn-primary w-100 h-100" asp-controller="Cinema" asp-action="Details" asp-route-id="@cinema.CinemaId">Choose this cinema</a>
+            <a class="btn btn-primary w-100 h-100" asp-controller="Cinema" asp-action="Details" asp-route-id="@cinema.CinemaId" asp-route-date="@DateTime.Today.Date.ToString("yyyy-MM-dd")">Choose this cinema</a>
         </div>
     </div>
 }

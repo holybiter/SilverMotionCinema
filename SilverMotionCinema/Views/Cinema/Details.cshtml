@@ -1,2 +1,88 @@
-﻿
-<h1>Shows for  :</h1>
+﻿@{
+    @using SilverMotionCinema.ViewModels;
+    @model CinemaDetailsViewModel
+}
+
+<div class="dropdown">
+    <button class="btn btn-outline-primary mt-2 dropdown-toggle b" type="button" id="cinemaSwitch" data-bs-toggle="dropdown" aria-expanded="false">
+        @Model.SelectedCinema.Name, @Model.SelectedCinema.City.State
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="cinemaSwitch">
+        @foreach (Cinema cinemainCity in Model.CinemasInCity)
+        {
+            <li><a class="dropdown-item" asp-controller="Cinema" asp-action="Details" asp-route-id="@cinemainCity.CinemaId" asp-route-date="@DateTime.Today.Date.ToString("yyyy-MM-dd")">@cinemainCity.Name</a></li>
+        }
+        
+    </ul>
+</div>
+
+<ul class="nav nav-tabs mt-2">
+    @for(int i = 0; i < 7; i++){
+        <li class="nav-item">
+            <a class="nav-link @(Model.SelectedDate.ToString("yyyy-MM-dd") == DateTime.Today.AddDays(i).ToString("yyyy-MM-dd") ? "active" : "")" asp-controller="Cinema" asp-action="Details" asp-route-id="@Model.SelectedCinema.CinemaId" asp-route-date="@DateTime.Today.AddDays(i).ToString("yyyy-MM-dd")">@(i == 0 ? "(Today)" : "") @DateTime.Today.AddDays(i).DayOfWeek</a>
+        </li>
+    }
+</ul>
+
+<div class="container mt-3 border rounded p-2 shadow-sm text-center">
+    <h4 class="m-1">@Model.SelectedDate.ToString("d"), @Model.SelectedDate.DayOfWeek</h4>
+</div>
+
+<div>
+    @foreach(Movie movie in Model.Movies)
+    {
+        <div class="container mt-3 border rounded p-4 shadow-sm">
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="@movie.Image" class="img-fluid" alt="@movie.Title">
+                </div>
+                <div class="col-md-8">
+                    <h4>@movie.Title <span class="opacity-25">@((movie.ReleaseDate)?.ToString("yyyy"))</span></h4>
+                    @{
+                        @foreach (var genre in movie.Genres)
+                        {
+                            <button type="button" class="btn btn-outline-primary mt-2" disabled>@genre.Name</button>
+                        }
+                    }
+
+                    @foreach (CinemaHall hall in Model.CinemaHalls)
+                    {
+                        <div class="container mt-2 p-3 border-top border-bottom border-start rounded w-100">
+                            <h6 class="font-weight-bold">@hall.Name</h6>
+                            @foreach (Show show in Model.Shows)
+                            {
+                                if (show.MovieId == movie.MovieId && show.CinemaHall.CinemaHallId == hall.CinemaHallId)
+                                {
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#logInModal">@show.StartTime.ToString("HH:mm")</button>
+                                }
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<div class="modal fade" id="logInModal" tabindex="-1" aria-labelledby="logInModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Log in first to buy tickets comfortably!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Want to buy tickets faster and recieve exclusive offers?</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-danger" data-bs-dismiss="modal">Close</a>
+                <a class="btn btn-warning" asp-controller="User" asp-action="Registration" asp-route-id="@Model.SelectedCinema.CinemaId" asp-route-date="@Model.SelectedDate.ToString("yyyy-MM-dd")">Join for free</a>
+                <a class="btn btn-primary" asp-controller="User" asp-action="Index" asp-route-id="@Model.SelectedCinema.CinemaId">Log in</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SilverMotionCinema.Data;
-using SilverMotionCinema.Models;
+using SilverMotionCinema.ViewModels;
 
 namespace SilverMotionCinema.Controllers
 {
@@ -36,18 +36,53 @@ namespace SilverMotionCinema.Controllers
             }
         }
 
-        public IActionResult Details(int? id)
+        public IActionResult Details(int? id, DateTime date)
         {
+            Console.WriteLine(date.ToString());
             if (!id.HasValue)
             {
                 return BadRequest("You must pass a cinema ID in the route, for example, /Cinema/Details/21");
             }
-            Cinema? cinema = _context.Cinemas.FirstOrDefault(m => m.CinemaId == id);
-            if (cinema == null)
+
+            var selectedCinema = _context.Cinemas
+                .Include(c => c.City)
+                .Include(c => c.CinemaHalls)
+                .FirstOrDefault(c => c.CinemaId == id);
+
+            var cinemasInCity = _context.Cinemas
+                .Where(c => c.City == selectedCinema.City)
+                .ToList();
+
+            var cinemaHalls = selectedCinema.CinemaHalls.ToList();
+
+            var shows = _context.Shows
+                .Where(s => s.CinemaHall.CinemaId == id && s.Date == date)
+                .Include(s => s.Movie)
+                .ThenInclude(s => s.Genres)
+                .ToList();
+
+            var movies = shows.Select(s => s.Movie)
+                .GroupBy(m => m.Title, StringComparer.OrdinalIgnoreCase)
+                .Select(g => g.First())
+                .ToList();
+
+            var viewModel = new CinemaDetailsViewModel
             {
-                return NotFound($"CinemaId {cinema.CinemaId} not found.");
+                SelectedCinema = selectedCinema,
+                CinemasInCity = cinemasInCity,
+                CinemaHalls = cinemaHalls,
+                Shows = shows,
+                Movies = movies,
+                SelectedDate = date
+            };
+
+
+            if (selectedCinema == null)
+            {
+                return NotFound($"CinemaId {selectedCinema.CinemaId} not found.");
             }
-            return View(cinema);
+
+            return View(viewModel);
         }
     }
 }
