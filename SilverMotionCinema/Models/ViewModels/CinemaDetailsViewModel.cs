@@ -1,4 +1,4 @@
-﻿namespace SilverMotionCinema.ViewModels
+﻿namespace SilverMotionCinema.Models.ViewModels
 {
     public class CinemaDetailsViewModel
     {

@@ -9,9 +9,12 @@ var connectionString = builder.Configuration.GetConnectionString("SilverMotionCo
 
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<SilverMotionContext>();
+builder.Services.AddDbContext<SilverMotionContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<SilverMotionIdentityContext>(options => options.UseSqlServer(connectionStringIdentity));
-builder.Services.AddDefaultIdentity<SilverMotionUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<SilverMotionIdentityContext>();
+builder.Services.AddDefaultIdentity<SilverMotionUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<SilverMotionIdentityContext>();
+
 var app = builder.Build();
 
 
@@ -29,5 +32,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapRazorPages();
 
 app.Run();

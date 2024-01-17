@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +15,11 @@ namespace SilverMotionCinema.Controllers
         private readonly SilverMotionContext _context;
         private readonly UserManager<SilverMotionUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, SilverMotionContext context)
+        public HomeController(ILogger<HomeController> logger, SilverMotionContext context, UserManager<SilverMotionUser> userManager)
         {
             _logger = logger;
             _context = context;
+            _userManager = userManager;
         }
 
 
@@ -32,6 +34,7 @@ namespace SilverMotionCinema.Controllers
             return View(movies);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Privacy()
         {
             return View();

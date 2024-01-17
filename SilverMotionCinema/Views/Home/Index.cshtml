@@ -14,7 +14,7 @@
                         <div class="col-md-6">
                             <a class="text-decoration-none text-reset" asp-controller="Movies" asp-action="Details" asp-route-id="@Model[i].MovieId">
                                 <img src="@Model[i].Image" class="d-block img-fluid w-auto h-100" alt="Image">
-                                </a>
+                            </a>
                         </div>
                         <div class="col-md-6">
                             <a class="text-decoration-none text-reset" asp-controller="Movies" asp-action="Details" asp-route-id="@Model[i].MovieId">
@@ -25,7 +25,7 @@
                                     {
                                         <button type="button" class="btn btn-outline-primary mt-2" disabled>@genre.Name</button>
                                     }
-                                 }
+                                }
                                 <p class="mt-4"><b>Language:</b> @Model[i].Language?.Name</p>
                                 <p class="mt-4"><b>Country:</b> @Model[i].Country</p>
                                 <p class="mt-4"><b>Duration:</b> @(Model[i].Duration / 60)h@(Model[i].Duration % 60)min</p>
@@ -46,6 +46,10 @@
         </a>
     </div>
 </div>
+
+
+    
+
 
 
 

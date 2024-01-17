@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SilverMotionCinema.Data;
-using SilverMotionCinema.ViewModels;
 
 namespace SilverMotionCinema.Controllers
 {

@@ -1,0 +1,69 @@
+﻿@if(User.IsInRole("Admin")){
+    <h4 class="mt-2">Add new movie</h4>
+    <form class="mt-4">
+        <div class="form-group w-25">
+            <label for="addMovieTitle">Movie title</label>
+            <input type="text" class="form-control form-control-lg" id="addMovieTitle" placeholder="Title">
+        </div>
+        <div class="form-group mt-3">
+            <label for="addDescription">Description</label>
+            <textarea class="form-control" id="addDescription" rows="5"></textarea>
+        </div>
+        <div class="form-group mt-3 w-25">
+            <label for="addDReleaseDate">Release date</label>
+            <input type="date" class="form-control" id="addDReleaseDate"></input>
+        </div>
+        <div class="form-group mt-3 w-25">
+            <label for="addCountry">Country</label>
+            <input type="text" class="form-control" id="addCountry">
+        </div>
+        <div class="form-group mt-3 w-25">
+            <label for="addDuration">Duration (min)</label>
+            <input type="number" class="form-control" id="addDuration">
+        </div>
+
+        <div class="form-group mt-3 w-50">
+            <label for="addImage">Image (link)</label>
+            <input type="text" class="form-control" id="addImage">
+        </div>
+        <div class="form-check mt-3">
+            <input type="checkbox" class="form-check-input" id="isSelected">
+            <label class="form-check-label" for="isSelected">Select this movie for carousel</label>
+        </div>
+
+        <div class="form-group mt-3 w-25">
+            <label for="chooseAgeRating">Age rating</label>
+            <select class="form-control" id="chooseAgeRating">
+                <option>G</option>
+                <option>PG</option>
+                <option>PG-13</option>
+                <option>R</option>
+                <option>NC-17</option>
+            </select>
+        </div>
+        <div class="form-group mt-3 w-25">
+            <label for="chooseLanguage">Language</label>
+            <select class="form-control" id="chooseLanguage">
+                <option>English</option>
+                <option>French</option>
+                <option>Italian</option>
+                <option>Spanish</option>
+            </select>
+        </div>
+        <div class="form-group mt-3 w-25">
+            <label for="exxxx">Example multiple select</label>
+            <select multiple class="form-control" id="exxxx">
+                <option>English</option>
+                <option>French</option>
+                <option>Italian</option>
+                <option>Spanish</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4 w-25">Submit</button>
+    </form>
+}
+else
+{
+    <h1 class="text-danger">Access denied</h1>
+    <p class="text-danger">You do not have access to this resource</p>
+}
